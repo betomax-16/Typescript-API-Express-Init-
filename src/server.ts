@@ -20,7 +20,6 @@ class Server {
     constructor() {
         this.app = express();
         this.config();
-        console.log(process.env.PORT);
     }
 
     private config(): void {
