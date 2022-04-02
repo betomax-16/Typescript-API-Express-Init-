@@ -46,8 +46,8 @@ class Server {
             database: process.env.DB
         });
           
-        con.connect(function(err) {
-            if (err) throw err;
+        con.connect((err: any) => {
+            if (err) console.log('Connection error', err);
             console.log(`Connected to: ${process.env.HOSTDB}, DB: ${process.env.DB}`);
         });
     }
