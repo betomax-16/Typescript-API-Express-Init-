@@ -6,6 +6,7 @@ import { getEnv } from "./enviroment";
 import helmet from "helmet";
 import cors from "cors";
 import path from "path";
+import mongoose from "mongoose";
 import fs = require('fs');
 
 class Server {
@@ -20,11 +21,13 @@ class Server {
     constructor() {
         this.app = express();
         this.config();
-        console.log(process.env.PORT);
     }
 
     private config(): void {
         getEnv();
+
+        this.connectDataBase();
+
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
@@ -33,6 +36,20 @@ class Server {
         this.app.use(router);
         this.app.use('/api/v1', routerApiV1);
         this.app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument, undefined, undefined, this.customCss));
+    }
+
+    private connectDataBase(): void {
+        mongoose.connect(process.env.MONGO_URI || '');
+
+        const db = mongoose.connection;
+
+        db.on('error', (err) => {
+            console.log('Connection error', err)
+        });
+
+        db.once('open', () => {
+            console.log(`Connected to: ${process.env.MONGO_URI}`);
+        });
     }
 }
 
