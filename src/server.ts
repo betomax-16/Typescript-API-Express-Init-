@@ -3,6 +3,7 @@ import router from "./routes";
 import routerApiV1 from "./routes/api/v1/api";
 import swaggerUi = require('swagger-ui-express');
 import { getEnv } from "./enviroment";
+import helmet from "helmet";
 import cors from "cors";
 import path from "path";
 import fs = require('fs');
@@ -24,6 +25,7 @@ class Server {
 
     private config(): void {
         getEnv();
+        this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false}));
