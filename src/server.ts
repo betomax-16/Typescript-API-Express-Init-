@@ -43,7 +43,7 @@ class Server {
 
         const db = mongoose.connection;
 
-        db.on('error', (err) => {
+        db.on('error', (err: any) => {
             console.log('Connection error', err)
         });
 
