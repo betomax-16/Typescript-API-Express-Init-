@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import router from "./routes";
+import routerApiV1 from "./routes/api/v1/api";
 import swaggerUi = require('swagger-ui-express');
 import { getEnv } from "./enviroment";
 import path from "path";
@@ -25,8 +26,9 @@ class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false}));
         this.app.use(express.static(path.join(__dirname, 'public')));
-        this.app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument, undefined, undefined, this.customCss));
         this.app.use(router);
+        this.app.use('/api/v1', routerApiV1);
+        this.app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument, undefined, undefined, this.customCss));
     }
 }
 
